@@ -18,15 +18,18 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-## Deploy — GitHub Pages
+## Deploy — GitHub Pages (via Actions)
 
-1. Push to GitHub (the live branch lives at `claude/build-juicemn-website-SuzKz`; merge to `main` when ready).
-2. Repo → **Settings → Pages**.
-3. **Source:** `Deploy from a branch`. **Branch:** `main` / `(root)`. Save.
-4. Wait ~60 seconds. Site will be live at `https://<owner>.github.io/juicemn/`.
-5. To use the custom domain `juicemn.com`, add a `CNAME` file containing `juicemn.com` and point the apex DNS to GitHub Pages (`185.199.108.153`, `.109.153`, `.110.153`, `.111.153`).
+This repo deploys with the modern **GitHub Actions** Pages flow (not the legacy "Deploy from a branch" option). Workflow: `.github/workflows/pages.yml`.
 
-The included `.nojekyll` file disables Jekyll processing so files in `assets/` are served as-is.
+One-time setup:
+
+1. Repo → **Settings → Pages → Build and deployment → Source:** `GitHub Actions`.
+2. Push to `main` (or run the **Deploy to GitHub Pages** workflow manually from the Actions tab).
+3. Site is live at `https://<owner>.github.io/juicemn/` in ~1 minute. The Actions log will show the URL.
+4. For the custom domain `juicemn.com`, add a `CNAME` file containing `juicemn.com` and point apex DNS to GitHub Pages (`185.199.108.153`, `.109.153`, `.110.153`, `.111.153`). Then set the custom domain in **Settings → Pages**.
+
+The included `.nojekyll` keeps Pages from running Jekyll on the site.
 
 ## Admin (inline edit) lock
 

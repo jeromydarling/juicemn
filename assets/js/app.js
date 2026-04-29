@@ -14,6 +14,55 @@
     }
   });
 
+  // ---------- Mobile hamburger nav ----------
+  function wireNav() {
+    const nav = document.querySelector(".nav");
+    if (!nav || nav.querySelector(".nav-toggle")) return;
+
+    const btn = document.createElement("button");
+    btn.className = "nav-toggle";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Toggle menu");
+    btn.setAttribute("aria-expanded", "false");
+    btn.innerHTML =
+      '<svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' +
+      '<svg class="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    nav.appendChild(btn);
+
+    const closeNav = () => {
+      nav.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    };
+    const openNav = () => {
+      nav.classList.add("open");
+      btn.setAttribute("aria-expanded", "true");
+    };
+
+    btn.addEventListener("click", () => {
+      if (nav.classList.contains("open")) closeNav(); else openNav();
+    });
+
+    // Close drawer when a nav link is tapped
+    nav.querySelectorAll("ul a").forEach(a => {
+      a.addEventListener("click", closeNav);
+    });
+
+    // Close on outside tap
+    document.addEventListener("click", (e) => {
+      if (!nav.contains(e.target) && nav.classList.contains("open")) closeNav();
+    });
+
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && nav.classList.contains("open")) closeNav();
+    });
+
+    // Close when crossing back to desktop width
+    const mq = window.matchMedia("(min-width: 761px)");
+    mq.addEventListener("change", e => { if (e.matches) closeNav(); });
+  }
+  wireNav();
+
   // ---------- Admin lock ----------
   // Default password is "juneteenth1865" — change ADMIN_HASH to rotate.
   // Generate a new hash with:
