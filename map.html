@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Juneteenth Map — JUICE MN</title>
+  <meta name="description" content="An interactive map of Juneteenth — from Independence Hall in 1776 to West Broadway in 2026. Walk the story, place by place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Alfa+Slab+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+</head>
+<body>
+
+<div class="flag-stripe"></div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html" class="brand">
+      <span class="badge">J</span>
+      <span>JUICE&nbsp;<span style="color:var(--gold)">·</span>&nbsp;MN&nbsp;Juneteenth</span>
+    </a>
+    <ul>
+      <li><a class="navlink" href="index.html">Home</a></li>
+      <li><a class="navlink" href="history.html">History</a></li>
+      <li><a class="navlink" href="map.html">Map</a></li>
+      <li><a class="navlink" href="sponsor.html">Sponsor</a></li>
+      <li><a class="donate-cta" href="sponsor.html">Become a Sponsor</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="map-shell">
+  <aside class="map-sidebar">
+    <h2>Walk the Story</h2>
+    <p class="hint">A map of Juneteenth — from Independence Hall in 1776 to West Broadway in 2026. Click any stop to fly there and read the moment.</p>
+    <ul class="stop-list" aria-label="Map stops"></ul>
+  </aside>
+  <div id="map" aria-label="Interactive Juneteenth map"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <h4>J.U.I.C.E.</h4>
+      <p data-editable="footer.about">
+        Juneteenth Urban Initiative Creating Economic-Empowerment.
+        Presenter of the MN Juneteenth Jamboree on West Broadway in North Minneapolis —
+        celebrating freedom, honoring resilience, uplifting community.
+      </p>
+    </div>
+    <div>
+      <h4>The 2026 Event</h4>
+      <p>June 19, 2026 · 11 AM – 7 PM</p>
+      <p>West Broadway Ave N</p>
+      <p>Minneapolis, MN 55411</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Todd Gramenz, Executive Director</p>
+      <p><a href="tel:+16518005130">(651) 800-5130</a></p>
+      <p><a href="mailto:MNJunteenth@gmail.com">MNJunteenth@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© <span id="year"></span> J.U.I.C.E. — Juneteenth Urban Initiative Creating Economic-Empowerment</span>
+    <button class="lock-btn" aria-label="Admin sign in">🔒 Admin</button>
+  </div>
+</footer>
+
+<div class="admin-overlay" role="dialog" aria-modal="true" aria-label="Admin sign in">
+  <div class="admin-modal">
+    <h3>Admin sign in</h3>
+    <p>Enter the admin password to enable inline editing on this site.</p>
+    <input type="password" placeholder="Password" autocomplete="current-password" />
+    <div class="row">
+      <button class="btn btn-secondary cancel">Cancel</button>
+      <button class="btn btn-primary submit">Unlock</button>
+    </div>
+    <div class="err" role="alert"></div>
+  </div>
+</div>
+<div class="admin-bar" role="status">
+  ✏️ Editing on
+  <button class="export">Export edits</button>
+  <button class="reset">Reset</button>
+  <button class="exit">Exit</button>
+</div>
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script src="assets/js/map.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
