@@ -34,13 +34,26 @@
   </nav>
 </header>
 
-<div class="map-shell">
-  <aside class="map-sidebar">
-    <h2>Walk the Story</h2>
-    <p class="hint">A map of Juneteenth — from Independence Hall in 1776 to West Broadway in 2026. Click any stop to fly there and read the moment.</p>
-    <ul class="stop-list" aria-label="Map stops"></ul>
-  </aside>
+<div class="map-page">
   <div id="map" aria-label="Interactive Juneteenth map"></div>
+
+  <div class="stop-strip-wrap">
+    <div class="stop-strip-head">
+      <div>
+        <div class="section-kicker">Walk the Story</div>
+        <h2 class="strip-title">From Galveston, 1865 — to West Broadway, 2026.</h2>
+      </div>
+      <div class="strip-nav" aria-hidden="true">
+        <button class="strip-arrow prev" aria-label="Previous stop">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button class="strip-arrow next" aria-label="Next stop">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <ol class="stop-strip" aria-label="Map stops"></ol>
+  </div>
 </div>
 
 <footer class="site-footer">

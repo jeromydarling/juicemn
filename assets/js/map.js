@@ -1,7 +1,6 @@
 /* JUICE — Interactive Juneteenth map
-   Built on Leaflet with Carto Dark Matter tiles for a beautiful, themed look.
-   No API key required — works on GitHub Pages out of the box.
-   The map UI is Mapbox-style: dark canvas, custom markers, smooth fly-to.
+   Map on top; horizontal swipable stop strip below.
+   Built on Leaflet + Carto Dark Matter tiles (no API key required).
 */
 
 const STOPS = [
@@ -48,7 +47,7 @@ const STOPS = [
     place: "Ashton Villa · Galveston, TX",
     coords: [29.3013, -94.7977],
     body:
-      "Maj. Gen. Gordon Granger arrives in Galveston with about 2,000 Union troops and reads General Order No. 3: 'The people of Texas are informed that, in accordance with a proclamation from the Executive of the United States, all slaves are free.' Some 250,000 people learn that day what had been legally true for two and a half years. This is Juneteenth."
+      "Maj. Gen. Gordon Granger arrives in Galveston with about 2,000 Union troops and reads General Order No. 3: 'all slaves are free.' Some 250,000 people learn that day what had been legally true for two and a half years. This is Juneteenth."
   },
   {
     id: "reedy",
@@ -57,7 +56,7 @@ const STOPS = [
     place: "Reedy Chapel AME · Galveston, TX",
     coords: [29.3060, -94.7929],
     body:
-      "One year later, freedmen and freedwomen gather at Reedy Chapel for what becomes the first annual Juneteenth celebration: prayer, song, a public reading of the Emancipation Proclamation, and a community meal. The form set here would travel everywhere."
+      "One year later, freedmen and freedwomen gather at Reedy Chapel for the first annual Juneteenth celebration: prayer, song, a public reading of the Emancipation Proclamation, and a community meal. The form set here would travel everywhere."
   },
   {
     id: "thirteenth",
@@ -75,7 +74,7 @@ const STOPS = [
     place: "Emancipation Park · Houston, TX",
     coords: [29.7378, -95.3580],
     body:
-      "Barred from white-owned parks, four formerly enslaved community leaders — Rev. Jack Yates, Richard Allen, Richard Brock, and Elias Dibble — pool $800 to buy ten acres for Juneteenth gatherings. The park stands today, in part because they refused to ask permission to be free."
+      "Barred from white-owned parks, four formerly enslaved community leaders — Rev. Jack Yates, Richard Allen, Richard Brock, and Elias Dibble — pool $800 to buy ten acres for Juneteenth gatherings. The park stands today."
   },
   {
     id: "march-on-washington",
@@ -93,7 +92,7 @@ const STOPS = [
     place: "Selma, AL",
     coords: [32.4045, -87.0181],
     body:
-      "Six hundred peaceful marchers — among them a young John Lewis — are met with state violence on the bridge. Within months, the Voting Rights Act passes. The march from Galveston to full citizenship continues, on foot, across decades."
+      "Six hundred peaceful marchers — among them a young John Lewis — are met with state violence on the bridge. Within months, the Voting Rights Act passes."
   },
   {
     id: "texas-recognition",
@@ -102,7 +101,7 @@ const STOPS = [
     place: "State Capitol · Austin, TX",
     coords: [30.2747, -97.7404],
     body:
-      "After a campaign led by State Rep. Al Edwards, Texas becomes the first state to recognize Juneteenth as an official holiday. The day that began in Galveston becomes a state-honored memory."
+      "After a campaign led by State Rep. Al Edwards, Texas becomes the first state to recognize Juneteenth as an official holiday."
   },
   {
     id: "federal",
@@ -120,7 +119,7 @@ const STOPS = [
     place: "Minnesota State Capitol · St. Paul, MN",
     coords: [44.9553, -93.1024],
     body:
-      "Governor Tim Walz signs the bill making Juneteenth an official state holiday in Minnesota. It is the first new state holiday in Minnesota in nearly 40 years."
+      "Governor Tim Walz signs the bill making Juneteenth an official state holiday in Minnesota — the first new state holiday in nearly 40 years."
   },
   {
     id: "west-broadway",
@@ -129,12 +128,17 @@ const STOPS = [
     place: "West Broadway Ave N · Minneapolis, MN",
     coords: [44.9966, -93.3008],
     body:
-      "Three blocks. 5,000+ neighbors. Parade, carnival, food trucks, live music, farmers market, car show. Minnesota's largest Juneteenth celebration, presented by J.U.I.C.E. — and the next chapter of a story that began in Galveston in 1865."
+      "Three blocks. 5,000+ neighbors. Parade, carnival, food trucks, live music, farmers market. Minnesota's largest Juneteenth celebration — and the next chapter of the story that began in Galveston."
   }
 ];
 
 function popupHTML(s) {
-  return `<time>${s.date}</time><h4>${s.title}</h4><p><strong>${s.place}</strong></p><p>${s.body}</p>`;
+  return (
+    `<time>${s.date}</time>` +
+    `<h4>${s.title}</h4>` +
+    `<div class="place">${s.place}</div>` +
+    `<p>${s.body}</p>`
+  );
 }
 
 function init() {
@@ -143,9 +147,8 @@ function init() {
     scrollWheelZoom: true,
     worldCopyJump: true,
     minZoom: 3
-  }).setView([37.5, -90], 4);
+  });
 
-  // Carto Dark Matter — beautiful dark vector-style raster tiles, free to use.
   L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
     {
@@ -156,6 +159,11 @@ function init() {
     }
   ).addTo(map);
 
+  // Fit all stops into view, with generous padding so nothing's hugging the edge
+  const bounds = L.latLngBounds(STOPS.map(s => s.coords));
+  map.fitBounds(bounds, { padding: [50, 50], maxZoom: 5 });
+
+  // Markers
   const markers = {};
   const COLORS = ["#e3261c", "#f2b63c", "#2e7d32"];
   STOPS.forEach((s, i) => {
@@ -163,46 +171,105 @@ function init() {
     const icon = L.divIcon({
       className: "juice-pin",
       html: `<span style="
-        display:block;width:18px;height:18px;border-radius:50%;
+        display:block;width:16px;height:16px;border-radius:50%;
         background:${color};border:3px solid #f7eedd;
-        box-shadow:0 0 0 2px ${color}, 0 4px 14px rgba(0,0,0,0.6);"></span>`,
-      iconSize: [24, 24],
-      iconAnchor: [12, 12]
+        box-shadow:0 0 0 2px ${color}, 0 4px 12px rgba(0,0,0,0.6);"></span>`,
+      iconSize: [22, 22],
+      iconAnchor: [11, 11]
     });
     const m = L.marker(s.coords, { icon }).addTo(map);
-    m.bindPopup(popupHTML(s), { maxWidth: 320 });
+    m.bindPopup(popupHTML(s), { maxWidth: 240, autoPanPadding: [30, 60] });
+    m.on("click", () => setActive(s.id, { panMap: false }));
     markers[s.id] = m;
   });
 
-  // Sidebar
-  const list = document.querySelector(".stop-list");
+  // Stop strip
+  const strip = document.querySelector(".stop-strip");
   STOPS.forEach((s, i) => {
     const li = document.createElement("li");
-    li.className = "stop";
+    li.className = "stop-card";
     li.dataset.id = s.id;
-    li.innerHTML = `<time>${s.date}</time><h4>${s.title}</h4><p>${s.place}</p>`;
-    li.addEventListener("click", () => focusStop(s.id));
-    list.appendChild(li);
+    li.tabIndex = 0;
+    const num = String(i + 1).padStart(2, "0");
+    li.innerHTML =
+      `<span class="num">${num} · ${STOPS.length}</span>` +
+      `<time>${s.date}</time>` +
+      `<h4>${s.title}</h4>` +
+      `<p>${s.place}</p>`;
+    li.addEventListener("click", () => setActive(s.id, { panMap: true }));
+    li.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setActive(s.id, { panMap: true });
+      }
+    });
+    strip.appendChild(li);
   });
 
-  function focusStop(id) {
-    const s = STOPS.find(x => x.id === id);
-    if (!s) return;
-    document.querySelectorAll(".stop").forEach(el => el.classList.remove("active"));
-    const li = document.querySelector(`.stop[data-id="${id}"]`);
-    if (li) {
-      li.classList.add("active");
-      li.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  let activeIndex = 0;
+
+  function setActive(id, opts = {}) {
+    const idx = STOPS.findIndex(x => x.id === id);
+    if (idx < 0) return;
+    activeIndex = idx;
+    const s = STOPS[idx];
+
+    document.querySelectorAll(".stop-card").forEach(el =>
+      el.classList.toggle("active", el.dataset.id === id)
+    );
+
+    // Scroll the active card into view in the strip
+    const card = document.querySelector(`.stop-card[data-id="${id}"]`);
+    if (card) {
+      card.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start"
+      });
     }
-    map.flyTo(s.coords, 7, { duration: 1.2 });
-    setTimeout(() => markers[id].openPopup(), 800);
+
+    if (opts.panMap !== false) {
+      map.flyTo(s.coords, 6, { duration: 0.9, easeLinearity: 0.3 });
+      setTimeout(() => markers[id].openPopup(), 700);
+    } else {
+      markers[id].openPopup();
+    }
+
+    updateArrows();
   }
 
-  // Auto-open the first stop
-  setTimeout(() => focusStop(STOPS[0].id), 400);
+  // Arrow navigation
+  const prevBtn = document.querySelector(".strip-arrow.prev");
+  const nextBtn = document.querySelector(".strip-arrow.next");
 
-  // Expose for debugging / future hooks
-  window.JUICE_MAP = { map, markers, STOPS, focusStop };
+  function updateArrows() {
+    if (!prevBtn || !nextBtn) return;
+    prevBtn.disabled = activeIndex <= 0;
+    nextBtn.disabled = activeIndex >= STOPS.length - 1;
+  }
+
+  prevBtn?.addEventListener("click", () => {
+    if (activeIndex > 0) setActive(STOPS[activeIndex - 1].id, { panMap: true });
+  });
+  nextBtn?.addEventListener("click", () => {
+    if (activeIndex < STOPS.length - 1) setActive(STOPS[activeIndex + 1].id, { panMap: true });
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    if (e.key === "ArrowLeft" && activeIndex > 0) setActive(STOPS[activeIndex - 1].id, { panMap: true });
+    if (e.key === "ArrowRight" && activeIndex < STOPS.length - 1) setActive(STOPS[activeIndex + 1].id, { panMap: true });
+  });
+
+  // Initial: highlight first card without zooming in (keep the wide view)
+  document.querySelector(`.stop-card[data-id="${STOPS[0].id}"]`)?.classList.add("active");
+  updateArrows();
+
+  // Make sure tiles render correctly after layout settles (mobile address bar etc.)
+  setTimeout(() => map.invalidateSize(), 200);
+  window.addEventListener("resize", () => map.invalidateSize());
+
+  window.JUICE_MAP = { map, markers, STOPS, setActive };
 }
 
 if (document.readyState === "loading") {
