@@ -1012,3 +1012,92 @@ body.admin-mode .admin-bar { display: inline-flex; }
 
 /* Larger touch targets across the board */
 button, a.btn, .lock-btn { -webkit-tap-highlight-color: rgba(255,210,63,0.2); }
+
+/* ----- Thank-you page ----- */
+.thanks-mark {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4caf50, var(--green-deep));
+  display: grid;
+  place-items: center;
+  margin: 0 auto 22px;
+  color: var(--cream);
+  font-size: 3rem;
+  font-family: var(--font-display);
+  box-shadow: 0 14px 40px rgba(46,125,50,0.45), inset 0 0 0 4px rgba(247,238,221,0.15);
+  animation: thanks-pop .5s cubic-bezier(.22,1.4,.36,1) both;
+}
+@keyframes thanks-pop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  70%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 22px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(247,238,221,0.08);
+}
+.step:first-child { border-top: none; padding-top: 8px; }
+.step-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  background: var(--black-card);
+  color: var(--gold-bright);
+  border: 2px solid var(--gold);
+}
+.step-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.step-body p { color: var(--cream-soft); margin-bottom: 10px; max-width: 65ch; }
+.step-body p:last-child { margin-bottom: 0; }
+.checklist {
+  list-style: none;
+  margin: 8px 0 14px;
+  padding: 0;
+}
+.checklist li {
+  position: relative;
+  padding: 6px 0 6px 30px;
+  color: var(--cream-soft);
+}
+.checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 13px;
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, transparent 50%, var(--gold) 50%);
+  border: 1.5px solid var(--gold);
+}
+.checklist li::after {
+  content: "✓";
+  position: absolute;
+  left: 4px; top: 6px;
+  color: var(--black);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .thanks-mark { width: 64px; height: 64px; font-size: 2.2rem; margin-bottom: 16px; }
+  .step { grid-template-columns: 44px 1fr; gap: 16px; padding: 20px 0; }
+  .step-num { width: 44px; height: 44px; font-size: 1.05rem; }
+  .step-body h3 { font-size: 1.1rem; }
+}
