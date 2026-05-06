@@ -1,0 +1,45 @@
+name: Set up Stripe (Products + Payment Links)
+
+# Manual trigger only — never runs automatically.
+# Use Actions → "Set up Stripe" → "Run workflow".
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: setup-stripe
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Stripe SDK
+        run: pip install --quiet "stripe>=8,<13"
+
+      - name: Create Stripe products and Payment Links
+        env:
+          STRIPE_API_KEY: ${{ secrets.JUICE_STRIPE_KEY }}
+        run: python scripts/setup_stripe.py
+
+      - name: Commit Payment Link URLs (if changed)
+        run: |
+          git config user.name  "JUICE Stripe Setup Bot"
+          git config user.email "actions@github.com"
+          git add assets/data/payment-links.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update Stripe Payment Links via workflow"
+            git push origin HEAD:main
+          fi

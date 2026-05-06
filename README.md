@@ -9,7 +9,8 @@ Static site for **J.U.I.C.E. — Juneteenth Urban Initiative Creating Economic-E
 | Home | `index.html` | Event hero (flyer-inspired), mission pillars, Michelle Gibson tribute, sponsor preview |
 | History | `history.html` | The story of Juneteenth — Galveston 1865 → West Broadway 2026 |
 | Map | `map.html` | Interactive map of key Juneteenth locations and dates |
-| Sponsor | `sponsor.html` | Five sponsorship tiers + Stripe-stubbed checkout |
+| Sponsor | `sponsor.html` | Five sponsorship tiers, redirecting to Stripe Payment Links |
+| Thank you | `thank-you.html` | Post-payment confirmation with onboarding checklist |
 
 ## Run locally
 
@@ -45,21 +46,61 @@ Once unlocked, every block of text marked `data-editable="..."` becomes editable
 
 ## Stripe (sponsorship payments)
 
-Currently **stubbed**. To wire real Stripe Checkout:
+Sponsorship runs on **Stripe Payment Links** — no backend required. A one-shot
+GitHub Actions workflow creates the five Products, Prices, and Payment Links
+in your Stripe account and writes the URLs to `assets/data/payment-links.json`.
+The site loads that JSON and redirects each tier button to its Payment Link.
 
-1. Create a small backend endpoint that creates a [Checkout Session](https://stripe.com/docs/api/checkout/sessions/create) and returns `{ url }`.
-2. In `assets/js/sponsor.js` (or before it on the page), set:
+### One-time setup
 
-   ```html
-   <script>
-     window.STRIPE_PUBLISHABLE_KEY = "pk_live_xxx";
-     window.STRIPE_CHECKOUT_ENDPOINT = "https://your-api.example.com/create-checkout-session";
-   </script>
-   ```
+1. **Create a restricted key** in Stripe Dashboard → Developers → API keys →
+   "+ Create restricted key". Name it `juicemn-claude-setup`. Permissions:
 
-3. The existing form will POST sponsor info to that endpoint and redirect to the Stripe-hosted checkout page. Tier amounts are defined in the `TIERS` map in `sponsor.js`.
+   | Resource       | Permission |
+   |----------------|------------|
+   | Products       | Write      |
+   | Prices         | Write      |
+   | Payment Links  | Write      |
 
-Until then, submitting the sponsor form records interest, alerts the user, and shows a confirmation toast. Todd follows up by phone/email.
+   Use a **test-mode** key (`rk_test_…`) for the first run.
+
+2. **Add it as a repo secret**: Repo → Settings → Secrets and variables →
+   Actions → New repository secret → name `JUICE_STRIPE_KEY`, paste the key.
+
+3. **Run the workflow**: Actions → "Set up Stripe (Products + Payment Links)" →
+   Run workflow. The script is idempotent (matches on
+   `metadata.tier`), so re-running it is safe.
+
+4. The workflow commits the resulting Payment Link URLs back to
+   `assets/data/payment-links.json` and the Pages workflow deploys.
+
+5. Test the full flow with Stripe's test card `4242 4242 4242 4242`. Verify
+   the success redirect lands on `/thank-you.html`.
+
+6. When ready for production, replace the secret with a **live-mode** restricted
+   key (`rk_live_…`) and re-run the workflow.
+
+### Stripe Dashboard checklist (one-time)
+
+- [ ] Settings → Branding → upload logo, set accent color `#e3261c`
+- [ ] Settings → Public business information → name, support email, phone
+- [ ] Settings → Customer emails → ✅ Successful payments, ✅ Refunds
+- [ ] Personal settings → Notifications → ✅ Successful payments
+- [ ] Settings → Payments → Statement descriptors → `JUICE MN JUNETEENTH`
+
+### Per-Payment-Link config (already set by the script)
+
+- After-payment redirect → `https://juicemn.com/thank-you.html`
+- Custom field: **Company / Organization** (required)
+- Custom field: **Anything we should know** (optional)
+- Phone collection: enabled
+- Ally tier: customer-chosen amount, $1,500 – $5,000
+
+### Fallback
+
+If `assets/data/payment-links.json` is empty (workflow not yet run), the
+sponsor buttons fall back to an in-page interest form that records contact
+info and prompts a phone/email follow-up from Todd.
 
 ## Design system
 

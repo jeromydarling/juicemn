@@ -1,45 +1,20 @@
-/* JUICE — Sponsor checkout (Stripe-stubbed)
-   Wires up the per-tier "Become Sponsor" buttons to a checkout modal.
-   When a real Stripe publishable key + Checkout Session backend is wired in,
-   replace the body of `startCheckout` with a Stripe.js redirectToCheckout call.
+/* JUICE — Sponsor checkout
+   Once Stripe is set up via the "Set up Stripe" workflow, the file
+   assets/data/payment-links.json contains a Payment Link URL per tier.
+   Clicking a tier button redirects to its Stripe-hosted checkout page.
+   If the JSON is missing (Stripe not yet configured), we fall back to
+   the old in-page modal that captures interest and prompts a callback.
 */
 
-const TIERS = {
-  presenting: {
-    name: "Presenting Sponsor",
-    price: "$100,000",
-    amount: 10000000, // cents
-    blurb: "Maximum visibility. Exclusive leadership."
-  },
-  freedom: {
-    name: "Freedom Sponsor",
-    price: "$50,000",
-    amount: 5000000,
-    blurb: "High-impact visibility. Strong community presence."
-  },
-  legacy: {
-    name: "Legacy Sponsor",
-    price: "$25,000",
-    amount: 2500000,
-    blurb: "Solid brand exposure. Strong local presence."
-  },
-  community: {
-    name: "Community Sponsor",
-    price: "$10,000",
-    amount: 1000000,
-    blurb: "Local support. Community recognition."
-  },
-  ally: {
-    name: "Ally Sponsor",
-    price: "$1,500 – $5,000",
-    amount: 150000,
-    blurb: "Foundational support. Mission alignment."
-  }
+const STUB_TIERS = {
+  presenting: { name: "Presenting Sponsor",  price: "$100,000",         blurb: "Maximum visibility. Exclusive leadership." },
+  freedom:    { name: "Freedom Sponsor",     price: "$50,000",          blurb: "High-impact visibility. Strong community presence." },
+  legacy:     { name: "Legacy Sponsor",      price: "$25,000",          blurb: "Solid brand exposure. Strong local presence." },
+  community:  { name: "Community Sponsor",   price: "$10,000",          blurb: "Local support. Community recognition." },
+  ally:       { name: "Ally Sponsor",        price: "$1,500 – $5,000",  blurb: "Foundational support. Mission alignment." },
 };
 
-// ---- Replace these once you have Stripe keys ----
-window.STRIPE_PUBLISHABLE_KEY = window.STRIPE_PUBLISHABLE_KEY || ""; // pk_live_... or pk_test_...
-window.STRIPE_CHECKOUT_ENDPOINT = window.STRIPE_CHECKOUT_ENDPOINT || ""; // your backend that creates a Checkout Session
+let PAYMENT_LINKS = null; // populated from assets/data/payment-links.json
 
 function showToast(msg) {
   const t = document.querySelector(".toast");
@@ -49,10 +24,27 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-function openCheckout(tierKey) {
-  const tier = TIERS[tierKey];
+async function loadPaymentLinks() {
+  try {
+    const res = await fetch("assets/data/payment-links.json", { cache: "no-cache" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data || !data.tiers || Object.keys(data.tiers).length === 0) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Stub fallback (used only if payment-links.json is missing)
+// ---------------------------------------------------------------------------
+
+function openStubCheckout(tierKey) {
+  const tier = STUB_TIERS[tierKey];
   if (!tier) return;
   const modal = document.querySelector(".checkout-modal");
+  if (!modal) return;
   modal.querySelector(".tier-name").textContent = tier.name;
   modal.querySelector(".price").textContent = tier.price;
   modal.querySelector(".tier-blurb").textContent = tier.blurb;
@@ -61,76 +53,89 @@ function openCheckout(tierKey) {
   setTimeout(() => modal.querySelector('input[name="company"]').focus(), 50);
 }
 
-function closeCheckout() {
-  document.querySelector(".checkout-modal").classList.remove("open");
+function closeStubCheckout() {
+  document.querySelector(".checkout-modal")?.classList.remove("open");
 }
 
-async function startCheckout(tierKey, formData) {
-  // ---- Stripe wiring goes here once keys are available ----
-  // Example (when ready):
-  //   const res = await fetch(window.STRIPE_CHECKOUT_ENDPOINT, {
-  //     method: "POST", headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ tier: tierKey, ...formData })
-  //   });
-  //   const { url } = await res.json();
-  //   window.location = url; // Stripe-hosted Checkout
-  // ---- End Stripe wiring ----
-
-  if (window.STRIPE_PUBLISHABLE_KEY && window.STRIPE_CHECKOUT_ENDPOINT) {
-    try {
-      const res = await fetch(window.STRIPE_CHECKOUT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tier: tierKey, ...formData })
-      });
-      const { url } = await res.json();
-      if (url) { window.location = url; return; }
-      throw new Error("No checkout URL returned");
-    } catch (e) {
-      console.error(e);
-      showToast("Checkout error — using offline form");
-    }
-  }
-
-  // Stub: pretend-process and confirm
-  await new Promise(r => setTimeout(r, 800));
-  const tier = TIERS[tierKey];
+async function submitStubInterest(tierKey, formData) {
+  await new Promise(r => setTimeout(r, 600));
+  const tier = STUB_TIERS[tierKey];
   alert(
     `Thank you, ${formData.contact || formData.company || "friend"}!\n\n` +
     `We've recorded your interest in the ${tier.name} (${tier.price}).\n\n` +
     `Stripe is being wired up — Todd will reach out within 24 hours at ${formData.email || "your email"} ` +
-    `to finalize your sponsorship and confirm payment.\n\n— J.U.I.C.E.`
+    `to finalize your sponsorship.\n\n— J.U.I.C.E.`
   );
-  closeCheckout();
+  closeStubCheckout();
   showToast("Sponsorship interest received");
 }
 
-function wire() {
-  // Hook every "Become {tier}" button
+// ---------------------------------------------------------------------------
+// Wire up
+// ---------------------------------------------------------------------------
+
+function handleTierClick(e) {
+  e.preventDefault();
+  const tierKey = e.currentTarget.getAttribute("data-tier");
+  if (!tierKey) return;
+
+  if (PAYMENT_LINKS && PAYMENT_LINKS.tiers && PAYMENT_LINKS.tiers[tierKey]?.url) {
+    // Real Stripe Payment Link — redirect.
+    window.location.href = PAYMENT_LINKS.tiers[tierKey].url;
+    return;
+  }
+  // Stripe not yet configured — fall back to interest modal.
+  openStubCheckout(tierKey);
+}
+
+function annotateButtons() {
+  // If we have real Payment Links, decorate buttons with proper href + target
+  // attributes so right-click "open in new tab" works and the URL preview shows.
+  if (!PAYMENT_LINKS || !PAYMENT_LINKS.tiers) return;
   document.querySelectorAll("[data-tier]").forEach(btn => {
-    btn.addEventListener("click", e => {
-      e.preventDefault();
-      openCheckout(btn.getAttribute("data-tier"));
+    const url = PAYMENT_LINKS.tiers[btn.getAttribute("data-tier")]?.url;
+    if (url && btn.tagName === "BUTTON") {
+      // Convert button → anchor in place to preserve right-click behavior
+      const a = document.createElement("a");
+      for (const attr of btn.attributes) a.setAttribute(attr.name, attr.value);
+      a.href = url;
+      a.innerHTML = btn.innerHTML;
+      a.classList.add("btn-as-link");
+      btn.replaceWith(a);
+      a.addEventListener("click", handleTierClick);
+    }
+  });
+}
+
+async function wire() {
+  PAYMENT_LINKS = await loadPaymentLinks();
+
+  if (PAYMENT_LINKS) {
+    annotateButtons();
+    if (PAYMENT_LINKS.mode === "test") {
+      console.info("[JUICE] Stripe Payment Links loaded (TEST mode).");
+    }
+  } else {
+    // No links yet — wire stub modal
+    document.querySelectorAll("[data-tier]").forEach(btn => {
+      btn.addEventListener("click", handleTierClick);
     });
-  });
-
-  const modal = document.querySelector(".checkout-modal");
-  if (!modal) return;
-
-  modal.querySelector(".cancel").addEventListener("click", closeCheckout);
-  modal.addEventListener("click", e => { if (e.target === modal) closeCheckout(); });
-
-  modal.querySelector("form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const formData = Object.fromEntries(fd.entries());
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Processing…";
-    await startCheckout(modal.dataset.tier, formData);
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Continue to payment";
-  });
+    const modal = document.querySelector(".checkout-modal");
+    if (modal) {
+      modal.querySelector(".cancel")?.addEventListener("click", closeStubCheckout);
+      modal.addEventListener("click", e => { if (e.target === modal) closeStubCheckout(); });
+      modal.querySelector("form")?.addEventListener("submit", async e => {
+        e.preventDefault();
+        const fd = Object.fromEntries(new FormData(e.target).entries());
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing…";
+        await submitStubInterest(modal.dataset.tier, fd);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Continue to payment";
+      });
+    }
+  }
 }
 
 if (document.readyState === "loading") {
