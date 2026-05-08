@@ -1,40 +1,40 @@
 {
-  "mode": "test",
+  "mode": "live",
   "tiers": {
     "presenting": {
       "name": "Presenting Sponsor",
-      "product_id": "prod_UT6c4h8yFZRVCN",
-      "price_id": "price_1TUAPV18Fvoals7e0WB2Dktg",
-      "payment_link_id": "plink_1TUAPW18Fvoals7erhVBXXOY",
-      "url": "https://buy.stripe.com/test_cNi4gr0UV8fcaAO23J6Vq00"
+      "product_id": "prod_UTpYT94X9jgWP7",
+      "price_id": "price_1TUrsz0f1XN9he97S2kFNOUW",
+      "payment_link_id": "plink_1TUrsz0f1XN9he97Cn1JyuOs",
+      "url": "https://buy.stripe.com/6oUeV52RV3pQ1m20tE9Ve00"
     },
     "freedom": {
       "name": "Freedom Sponsor",
-      "product_id": "prod_UT6cL7OWSgeWSb",
-      "price_id": "price_1TUAPX18Fvoals7eNUKHdUPK",
-      "payment_link_id": "plink_1TUAPX18Fvoals7eIlgkvrAH",
-      "url": "https://buy.stripe.com/test_eVq28j3338fc38m0ZF6Vq01"
+      "product_id": "prod_UTpY388xCOaTen",
+      "price_id": "price_1TUrt00f1XN9he97wewsbh48",
+      "payment_link_id": "plink_1TUrt00f1XN9he97rOwKQgSJ",
+      "url": "https://buy.stripe.com/dRm14fbor9OeggW5NY9Ve01"
     },
     "legacy": {
       "name": "Legacy Sponsor",
-      "product_id": "prod_UT6c7Oz7a3QEZ0",
-      "price_id": "price_1TUAPY18Fvoals7ey7YiAAae",
-      "payment_link_id": "plink_1TUAPY18Fvoals7egHAkbnk1",
-      "url": "https://buy.stripe.com/test_6oU4grgTT8fcaAO8s76Vq02"
+      "product_id": "prod_UTpYteZMaSmfbm",
+      "price_id": "price_1TUrt10f1XN9he97mJignzdo",
+      "payment_link_id": "plink_1TUrt10f1XN9he97C6IkwAVe",
+      "url": "https://buy.stripe.com/14AcMXgILd0qggWdgq9Ve02"
     },
     "community": {
       "name": "Community Sponsor",
-      "product_id": "prod_UT6cjpQWFEZHco",
-      "price_id": "price_1TUAPZ18Fvoals7ejp1EuBWY",
-      "payment_link_id": "plink_1TUAPZ18Fvoals7eI9SQjKXH",
-      "url": "https://buy.stripe.com/test_9B614f4777b8eR4bEj6Vq03"
+      "product_id": "prod_UTpYnvxKOACglm",
+      "price_id": "price_1TUrt20f1XN9he97j4NFw3R3",
+      "payment_link_id": "plink_1TUrt20f1XN9he97FCeLvFVG",
+      "url": "https://buy.stripe.com/8x2dR1bord0qggWeku9Ve03"
     },
     "ally": {
       "name": "Ally Sponsor",
-      "product_id": "prod_UT6cHAsiWo0fSj",
-      "price_id": "price_1TUAPa18Fvoals7equf485OP",
-      "payment_link_id": "plink_1TUAPb18Fvoals7ejrdeNGVW",
-      "url": "https://buy.stripe.com/test_00wbIT0UV674bESfUz6Vq04"
+      "product_id": "prod_UTpY3yl0EySpgO",
+      "price_id": "price_1TUrt30f1XN9he97X8zPYoG3",
+      "payment_link_id": "plink_1TUrt30f1XN9he9778K3nntN",
+      "url": "https://buy.stripe.com/eVqfZ9gILd0q4ye1xI9Ve04"
     }
   }
 }
