@@ -246,6 +246,31 @@
     const form = document.getElementById("onboarding-form");
     if (!form) return;
 
+    // Read context Stripe passed in the success URL.
+    const params = new URLSearchParams(location.search);
+    const tierParam = (params.get("tier") || "").trim();
+    const sessionId = (params.get("cs") || "").trim();
+
+    // Map tier slug → the matching <option> label
+    const TIER_LABELS = {
+      presenting:      "Presenting Sponsor ($100,000)",
+      freedom:         "Freedom Sponsor ($50,000)",
+      legacy:          "Legacy Sponsor ($25,000)",
+      community:       "Community Sponsor ($10,000)",
+      ally:            "Ally Sponsor ($1,500–$5,000)",
+      food_vendor:     "Food Vendor Booth ($300)",
+      non_food_vendor: "Non-Food Vendor Booth ($300)",
+    };
+    if (tierParam && TIER_LABELS[tierParam]) {
+      const select = form.querySelector('[name="tier"]');
+      for (const opt of select.options) {
+        if (opt.value === TIER_LABELS[tierParam] || opt.textContent === TIER_LABELS[tierParam]) {
+          opt.selected = true;
+          break;
+        }
+      }
+    }
+
     // Section heads in the order they should appear in the email body.
     const SECTIONS = [
       { title: "YOUR BUSINESS", fields: [
@@ -285,6 +310,18 @@
       const subject = `Sponsor / Vendor Onboarding — ${company}`;
 
       let body = "Hi Todd,\n\nHere are our details for the 2026 MN Juneteenth Jamboree.\n\n";
+
+      // Payment identifier (so Todd can match this email to the Stripe charge)
+      if (sessionId || tierParam) {
+        body += "--- PAYMENT ---\n";
+        if (tierParam && TIER_LABELS[tierParam]) {
+          body += `Tier: ${TIER_LABELS[tierParam]}\n`;
+        }
+        if (sessionId) {
+          body += `Stripe Session ID: ${sessionId}\n`;
+        }
+        body += "\n";
+      }
 
       for (const sec of SECTIONS) {
         // Only include a section if at least one of its fields has a value

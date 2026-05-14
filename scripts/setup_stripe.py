@@ -19,7 +19,13 @@ import stripe
 # Config
 # ---------------------------------------------------------------------------
 
-REDIRECT_URL = "https://juicemn.com/thank-you.html"
+REDIRECT_URL_BASE = "https://juicemn.com/thank-you.html"
+
+def redirect_url(tier_key):
+    # Stripe substitutes {CHECKOUT_SESSION_ID} with the real session ID on
+    # successful payment, so the thank-you page can use it to identify the
+    # sponsor / vendor and include it back to Todd in the onboarding email.
+    return f"{REDIRECT_URL_BASE}?tier={tier_key}&cs={{CHECKOUT_SESSION_ID}}"
 
 TIERS = [
     {
@@ -270,7 +276,7 @@ def upsert_payment_link(price, tier):
             ln.id,
             after_completion={
                 "type": "redirect",
-                "redirect": {"url": REDIRECT_URL},
+                "redirect": {"url": redirect_url(tier["key"])},
             },
             custom_fields=fields,
             metadata={"tier": tier["key"], "managed_by": "juicemn-setup"},
@@ -280,7 +286,7 @@ def upsert_payment_link(price, tier):
         line_items=[{"price": price.id, "quantity": 1}],
         after_completion={
             "type": "redirect",
-            "redirect": {"url": REDIRECT_URL},
+            "redirect": {"url": redirect_url(tier["key"])},
         },
         custom_fields=fields,
         phone_number_collection={"enabled": True},
