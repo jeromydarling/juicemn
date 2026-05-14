@@ -70,18 +70,88 @@
         <div class="step-num">3</div>
         <div class="step-body">
           <h3>Send us what we need to make you look great</h3>
-          <p>To get your name, logo, and presence locked in across the event, we'll need:</p>
-          <ul class="checklist">
-            <li>Your <strong>hi-res logo</strong> (vector preferred — SVG, AI, or EPS — otherwise PNG at 1500px wide on a transparent background)</li>
-            <li>Exact spelling of your <strong>company / organization name</strong> as you want it printed</li>
-            <li><strong>One sentence</strong> describing your business (for the program and stage announcements)</li>
-            <li>Your <strong>website URL</strong> and primary <strong>social handles</strong></li>
-            <li>If your tier includes booth space: <strong>day-of contact name + cell</strong></li>
-            <li>If your tier includes event t-shirts: <strong>t-shirt sizes</strong> for your team</li>
-          </ul>
-          <p>You can email everything to
-            <a href="mailto:MNJunteenth@gmail.com?subject=Sponsor%20Materials%20-%20[Your%20Company]">MNJunteenth@gmail.com</a> —
-            put your company name in the subject line.</p>
+          <p>Fill out what's relevant below and hit <strong>Send to JUICE</strong> —
+             it'll open your email app with everything filled in. Just attach your logo before you send.</p>
+
+          <form id="onboarding-form" class="onboard-form" novalidate>
+            <fieldset>
+              <legend>Your business</legend>
+              <label>Company / organization name <span class="hint">— exact spelling for the program</span>
+                <input type="text" name="company" required />
+              </label>
+              <label>Primary contact (full name + title)
+                <input type="text" name="contact" />
+              </label>
+              <label>Website URL
+                <input type="url" name="website" placeholder="https://" />
+              </label>
+              <label>Social handles
+                <input type="text" name="social" placeholder="IG @yourbiz · FB / yourbiz · LinkedIn / yourbiz" />
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>What you signed up for</legend>
+              <label>I just paid as
+                <select name="tier">
+                  <option value="">— select —</option>
+                  <option>Presenting Sponsor ($100,000)</option>
+                  <option>Freedom Sponsor ($50,000)</option>
+                  <option>Legacy Sponsor ($25,000)</option>
+                  <option>Community Sponsor ($10,000)</option>
+                  <option>Ally Sponsor ($1,500–$5,000)</option>
+                  <option>Food Vendor Booth ($300)</option>
+                  <option>Non-Food Vendor Booth ($300)</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label>One-sentence description of your business
+                <input type="text" name="oneliner" placeholder="e.g. Family-owned bakery on Lyndale, baking since 2014" />
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>If you have a booth — food or non-food</legend>
+              <label>What you'll be serving / selling
+                <input type="text" name="offering" placeholder="e.g. Soul food plates / handmade jewelry / mental health resources" />
+              </label>
+              <label>Electrical needs
+                <select name="power">
+                  <option value="">— select —</option>
+                  <option>No power needed</option>
+                  <option>Yes — standard 110V outlet</option>
+                  <option>Yes — heavy duty / 220V</option>
+                  <option>Not sure yet</option>
+                </select>
+              </label>
+              <label>Day-of contact name + cell
+                <input type="text" name="dayof" placeholder="Name · (555) 555-5555" />
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>If your tier includes t-shirts</legend>
+              <label>T-shirt sizes for your team
+                <input type="text" name="shirts" placeholder="e.g. 2 M, 3 L, 1 XL, 1 2XL" />
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Anything else</legend>
+              <label>Notes, ideas, special requests
+                <textarea name="notes" rows="3"></textarea>
+              </label>
+            </fieldset>
+
+            <div class="onboard-actions">
+              <button type="submit" class="btn btn-primary">Send to JUICE</button>
+              <button type="button" id="copy-instead" class="btn btn-secondary">Copy as text instead</button>
+            </div>
+            <p class="onboard-attach">
+              <strong>One more thing:</strong> after your email app opens, attach your hi-res logo
+              (vector preferred — SVG / AI / EPS, or PNG ≥1500px wide on transparent background) and hit send.
+            </p>
+          </form>
         </div>
       </li>
       <li class="step">
@@ -170,6 +240,114 @@
 <div class="toast" role="status" aria-live="polite"></div>
 
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script>
+  // ----- Onboarding form → mailto: -----
+  (function () {
+    const form = document.getElementById("onboarding-form");
+    if (!form) return;
+
+    // Section heads in the order they should appear in the email body.
+    const SECTIONS = [
+      { title: "YOUR BUSINESS", fields: [
+          ["company",  "Company / organization"],
+          ["contact",  "Primary contact"],
+          ["website",  "Website"],
+          ["social",   "Social handles"],
+      ]},
+      { title: "TIER", fields: [
+          ["tier",     "Signed up as"],
+          ["oneliner", "One-sentence description"],
+      ]},
+      { title: "BOOTH (food / non-food vendors)", fields: [
+          ["offering", "What you'll be serving / selling"],
+          ["power",    "Electrical needs"],
+          ["dayof",    "Day-of contact"],
+      ]},
+      { title: "T-SHIRTS", fields: [
+          ["shirts",   "T-shirt sizes"],
+      ]},
+      { title: "NOTES", fields: [
+          ["notes",    "Anything else"],
+      ]},
+    ];
+
+    function getValues() {
+      const fd = new FormData(form);
+      const out = {};
+      for (const [k, v] of fd.entries()) out[k] = (v || "").trim();
+      return out;
+    }
+
+    function buildEmail() {
+      const vals = getValues();
+
+      const company = vals.company || "[Your Company]";
+      const subject = `Sponsor / Vendor Onboarding — ${company}`;
+
+      let body = "Hi Todd,\n\nHere are our details for the 2026 MN Juneteenth Jamboree.\n\n";
+
+      for (const sec of SECTIONS) {
+        // Only include a section if at least one of its fields has a value
+        const populated = sec.fields.filter(([k]) => vals[k]);
+        if (populated.length === 0) continue;
+        body += `--- ${sec.title} ---\n`;
+        for (const [k, label] of populated) {
+          body += `${label}: ${vals[k]}\n`;
+        }
+        body += "\n";
+      }
+
+      body += "Logo attached.\n\nThanks!\n";
+      return { subject, body };
+    }
+
+    function buildMailto() {
+      const { subject, body } = buildEmail();
+      return "mailto:MNJunteenth@gmail.com"
+        + "?subject=" + encodeURIComponent(subject)
+        + "&body="    + encodeURIComponent(body);
+    }
+
+    function showToast(msg) {
+      const t = document.querySelector(".toast");
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2400);
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!form.querySelector('[name="company"]').value.trim()) {
+        showToast("Please add your company name first");
+        form.querySelector('[name="company"]').focus();
+        return;
+      }
+      window.location.href = buildMailto();
+    });
+
+    document.getElementById("copy-instead").addEventListener("click", async () => {
+      const { subject, body } = buildEmail();
+      const text =
+        "To: MNJunteenth@gmail.com\n" +
+        "Subject: " + subject + "\n\n" +
+        body;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Copied — paste it into any email app");
+      } catch {
+        // Fallback for older browsers / restricted contexts
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        showToast("Copied — paste it into any email app");
+      }
+    });
+  })();
+</script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>
