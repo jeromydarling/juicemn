@@ -35,6 +35,20 @@
       "price_id": "price_1TUrt30f1XN9he97X8zPYoG3",
       "payment_link_id": "plink_1TUrt30f1XN9he9778K3nntN",
       "url": "https://buy.stripe.com/eVqfZ9gILd0q4ye1xI9Ve04"
+    },
+    "food_vendor": {
+      "name": "Food Vendor Booth",
+      "product_id": "prod_UW9IvzeCSNrJKS",
+      "price_id": "price_1TX6zd0f1XN9he97MxhgcFiI",
+      "payment_link_id": "plink_1TX6ze0f1XN9he97uGR3DgP6",
+      "url": "https://buy.stripe.com/6oU3cncsv1hId4Kb8i9Ve05"
+    },
+    "non_food_vendor": {
+      "name": "Non-Food Vendor Booth",
+      "product_id": "prod_UW9Iva7Gi3IANB",
+      "price_id": "price_1TX6ze0f1XN9he97vV3q1hkI",
+      "payment_link_id": "plink_1TX6zf0f1XN9he97EhD7YZNi",
+      "url": "https://buy.stripe.com/cNi7sDeAD1hI6Gm0tE9Ve06"
     }
   }
 }
