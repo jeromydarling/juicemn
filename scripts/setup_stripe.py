@@ -116,13 +116,13 @@ FOOD_VENDOR_FIELDS = [
         "dropdown": {
             "options": [
                 {"label": "BBQ",                   "value": "bbq"},
-                {"label": "Soul food",             "value": "soul_food"},
+                {"label": "Soul food",             "value": "soulfood"},
                 {"label": "Caribbean",             "value": "caribbean"},
                 {"label": "African",               "value": "african"},
                 {"label": "Latin",                 "value": "latin"},
-                {"label": "Vegan / Vegetarian",    "value": "vegan_vegetarian"},
-                {"label": "Snacks / Desserts",     "value": "snacks_desserts"},
-                {"label": "Drinks / Beverages",    "value": "drinks_beverages"},
+                {"label": "Vegan / Vegetarian",    "value": "veganveg"},
+                {"label": "Snacks / Desserts",     "value": "snacksdesserts"},
+                {"label": "Drinks / Beverages",    "value": "drinksbeverages"},
                 {"label": "Other",                 "value": "other"},
             ]
         },
@@ -134,10 +134,10 @@ FOOD_VENDOR_FIELDS = [
         "optional": False,
         "dropdown": {
             "options": [
-                {"label": "Yes — standard 110V",  "value": "yes_110v"},
-                {"label": "Yes — heavy / 220V",   "value": "yes_220v"},
-                {"label": "No / propane only",    "value": "no_propane"},
-                {"label": "Not sure yet",         "value": "not_sure"},
+                {"label": "Yes — standard 110V",  "value": "yes110v"},
+                {"label": "Yes — heavy / 220V",   "value": "yes220v"},
+                {"label": "No / propane only",    "value": "nopropane"},
+                {"label": "Not sure yet",         "value": "notsure"},
             ]
         },
     },
@@ -158,12 +158,12 @@ NON_FOOD_VENDOR_FIELDS = [
         "dropdown": {
             "options": [
                 {"label": "Apparel",                  "value": "apparel"},
-                {"label": "Art / handmade",           "value": "art_handmade"},
-                {"label": "Books / media",            "value": "books_media"},
+                {"label": "Art / handmade",           "value": "arthandmade"},
+                {"label": "Books / media",            "value": "booksmedia"},
                 {"label": "Beauty / personal care",   "value": "beauty"},
-                {"label": "Health / wellness",        "value": "health_wellness"},
-                {"label": "Community organization",   "value": "community_org"},
-                {"label": "Professional services",    "value": "professional_services"},
+                {"label": "Health / wellness",        "value": "healthwellness"},
+                {"label": "Community organization",   "value": "communityorg"},
+                {"label": "Professional services",    "value": "profservices"},
                 {"label": "Other",                    "value": "other"},
             ]
         },
