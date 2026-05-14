@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Participate — JUICE MN Juneteenth Jamboree</title>
+  <meta name="description" content="Sign up to participate in the 2026 MN Juneteenth Jamboree — Parade, Carnival, Car Show, or Petting Zoo. June 19, 2026 · West Broadway, Minneapolis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Alfa+Slab+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+</head>
+<body>
+
+<div class="flag-stripe"></div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html" class="brand">
+      <span class="badge">J</span>
+      <span>JUICE&nbsp;<span style="color:var(--gold)">·</span>&nbsp;MN&nbsp;Juneteenth</span>
+    </a>
+    <ul>
+      <li><a class="navlink" href="index.html">Home</a></li>
+      <li><a class="navlink" href="history.html">History</a></li>
+      <li><a class="navlink" href="map.html">Map</a></li>
+      <li><a class="navlink" href="participate.html">Participate</a></li>
+      <li><a class="navlink" href="sponsor.html">Sponsor</a></li>
+      <li><a class="donate-cta" href="sponsor.html">Become a Sponsor</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="page-hero">
+  <div class="eyebrow">GET INVOLVED · JUNE 19, 2026</div>
+  <h1>Bring the Jamboree <span style="color:var(--red)">to life.</span></h1>
+  <p>
+    The parade, the carnival, the car show, the petting zoo — these only happen
+    because neighbors show up with floats, games, classic rides, and animals.
+    There's no cost to participate. Sign up below and we'll be in touch.
+  </p>
+</section>
+
+<section class="block">
+  <div class="block-inner">
+    <div class="section-kicker">Pick your lane</div>
+    <h2 class="section-title">Four ways to <span class="accent">show up.</span></h2>
+
+    <div class="participate-grid">
+      <button class="participate-card" data-activity="parade">
+        <div class="part-emoji" aria-hidden="true">🎺</div>
+        <h3>Parade</h3>
+        <p>Floats, walking groups, marching bands, drumlines, dance troupes,
+           motorcycle clubs, performance trucks.</p>
+      </button>
+      <button class="participate-card" data-activity="carnival">
+        <div class="part-emoji" aria-hidden="true">🎡</div>
+        <h3>Carnival</h3>
+        <p>Bounce houses, game booths, face painting, bubble stations, kids'
+           entertainment, volunteer crews.</p>
+      </button>
+      <button class="participate-card" data-activity="carshow">
+        <div class="part-emoji" aria-hidden="true">🚗</div>
+        <h3>Car Show</h3>
+        <p>Classic, custom, lowriders, vintage, restorations, motorcycles —
+           bring your ride and your story.</p>
+      </button>
+      <button class="participate-card" data-activity="pettingzoo">
+        <div class="part-emoji" aria-hidden="true">🐐</div>
+        <h3>Petting Zoo</h3>
+        <p>Friendly animals for the kids — goats, rabbits, ponies, chickens.
+           Operators with insurance and the right certifications.</p>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="block-inner">
+    <div class="section-kicker">Sign-up</div>
+    <h2 class="section-title">Tell us about your <span class="accent">entry.</span></h2>
+    <p class="section-lede" style="margin-bottom:24px;">
+      Fill out what's relevant. When you hit <strong>Send to JUICE</strong>,
+      your email app opens with everything pre-filled. Empty sections get
+      skipped automatically.
+    </p>
+
+    <form id="participate-form" class="onboard-form" novalidate>
+      <fieldset>
+        <legend>Which activity?</legend>
+        <label>I want to participate in
+          <select name="activity" required>
+            <option value="">— select —</option>
+            <option value="parade">Parade</option>
+            <option value="carnival">Carnival</option>
+            <option value="carshow">Car Show</option>
+            <option value="pettingzoo">Petting Zoo</option>
+            <option value="multiple">More than one — see notes</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>About you / your group</legend>
+        <label>Group or individual name <span class="hint">— how should we announce you?</span>
+          <input type="text" name="groupname" required />
+        </label>
+        <label>Primary contact (full name)
+          <input type="text" name="contact" required />
+        </label>
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+        <label>Phone
+          <input type="tel" name="phone" required placeholder="(555) 555-5555" />
+        </label>
+        <label>City
+          <input type="text" name="city" placeholder="Minneapolis, MN" />
+        </label>
+        <label>Website or social handles
+          <input type="text" name="social" placeholder="IG @yourname · website.com" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Parade entry — fill if applicable</legend>
+        <label>Type of entry
+          <select name="parade_type">
+            <option value="">— select —</option>
+            <option>Float</option>
+            <option>Walking group</option>
+            <option>Marching band / drumline</option>
+            <option>Dance troupe</option>
+            <option>Motorcycle / car group</option>
+            <option>Performance / music truck</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Approximate size <span class="hint">— how many people, vehicles, animals, etc.</span>
+          <input type="text" name="parade_size" placeholder="e.g. 12 people walking, 1 float pulled by pickup truck" />
+        </label>
+        <label>Audio / PA needs
+          <select name="parade_audio">
+            <option value="">— select —</option>
+            <option>None — silent or acoustic</option>
+            <option>Yes — we bring our own (truck with speakers, etc.)</option>
+            <option>Yes — we'd need help</option>
+          </select>
+        </label>
+        <label>Brief description for the announcer
+          <textarea name="parade_blurb" rows="2" placeholder="One or two sentences we can read aloud as you pass the main stage"></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Carnival contribution — fill if applicable</legend>
+        <label>What you're bringing
+          <select name="carnival_type">
+            <option value="">— select —</option>
+            <option>Inflatable / bounce house</option>
+            <option>Game booth</option>
+            <option>Face painting / arts &amp; crafts</option>
+            <option>Bubble / chalk station</option>
+            <option>Performance / kids' entertainment</option>
+            <option>Volunteer crew (no equipment)</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Setup footprint <span class="hint">— roughly how much space you need</span>
+          <input type="text" name="carnival_size" placeholder="e.g. 10×10 tent, 20×20 inflatable" />
+        </label>
+        <label>Power needs
+          <select name="carnival_power">
+            <option value="">— select —</option>
+            <option>None</option>
+            <option>Standard 110V outlet</option>
+            <option>Heavy duty / 220V</option>
+            <option>We'll bring our own generator</option>
+          </select>
+        </label>
+        <label>Adult supervision + insurance
+          <select name="carnival_insurance">
+            <option value="">— select —</option>
+            <option>Yes — supervised, with liability insurance</option>
+            <option>Yes — supervised, no insurance</option>
+            <option>Need to discuss</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Car Show entry — fill if applicable</legend>
+        <label>Year / make / model
+          <input type="text" name="carshow_vehicle" placeholder="1969 Chevy Impala SS" />
+        </label>
+        <label>The story <span class="hint">— customs, restoration, family history, anything you want shared</span>
+          <textarea name="carshow_story" rows="2"></textarea>
+        </label>
+        <label>Oversize space needed?
+          <select name="carshow_size">
+            <option value="">— select —</option>
+            <option>Standard space is fine</option>
+            <option>Yes — extended bed truck, trailer, or motorcycle group</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Petting Zoo — fill if applicable</legend>
+        <label>Animals you'll bring <span class="hint">— types and rough counts</span>
+          <input type="text" name="zoo_animals" placeholder="e.g. 4 goats, 6 rabbits, 2 ponies, chickens" />
+        </label>
+        <label>Setup requirements
+          <textarea name="zoo_setup" rows="2" placeholder="Fencing dimensions, shade, water source, surface preference (grass / pavement)"></textarea>
+        </label>
+        <label>Insurance & certifications
+          <select name="zoo_insurance">
+            <option value="">— select —</option>
+            <option>Yes — liability insurance + USDA / state ag certs</option>
+            <option>Yes — liability insurance, no certs</option>
+            <option>Need to discuss</option>
+          </select>
+        </label>
+        <label>Water / power hookup needed?
+          <select name="zoo_utilities">
+            <option value="">— select —</option>
+            <option>None</option>
+            <option>Water only</option>
+            <option>Power only</option>
+            <option>Both water and power</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Day-of logistics</legend>
+        <label>Day-of contact name + cell <span class="hint">— in case anything changes on June 19</span>
+          <input type="text" name="dayof" placeholder="Name · (555) 555-5555" />
+        </label>
+        <label>Earliest you can arrive on June 19
+          <input type="text" name="arrival" placeholder="e.g. 9 AM, after 10:30, etc." />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Anything else</legend>
+        <label>Notes, special requests, accessibility needs, sponsor / vendor relationships
+          <textarea name="notes" rows="3"></textarea>
+        </label>
+      </fieldset>
+
+      <div class="onboard-actions">
+        <button type="submit" class="btn btn-primary">Send to JUICE</button>
+        <button type="button" id="copy-instead" class="btn btn-secondary">Copy as text instead</button>
+      </div>
+      <p class="onboard-attach">
+        After your email app opens, attach any helpful photos (your float, your car, your animals, etc.)
+        and hit send. We'll respond within a few days to confirm.
+      </p>
+    </form>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <h4>J.U.I.C.E.</h4>
+      <p data-editable="footer.about">
+        Juneteenth Urban Initiative Creating Economic-Empowerment.
+        Presenter of the MN Juneteenth Jamboree on West Broadway in North Minneapolis —
+        celebrating freedom, honoring resilience, uplifting community.
+      </p>
+    </div>
+    <div>
+      <h4>The 2026 Event</h4>
+      <p>June 19, 2026 · 11 AM – 7 PM</p>
+      <p>West Broadway Ave N</p>
+      <p>Minneapolis, MN 55411</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Todd Gramenz, Executive Director</p>
+      <p><a href="tel:+16518005130">(651) 800-5130</a></p>
+      <p><a href="mailto:MNJunteenth@gmail.com">MNJunteenth@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© <span id="year"></span> J.U.I.C.E. — Juneteenth Urban Initiative Creating Economic-Empowerment</span>
+    <button class="lock-btn" aria-label="Admin sign in">🔒 Admin</button>
+  </div>
+</footer>
+
+<div class="admin-overlay" role="dialog" aria-modal="true" aria-label="Admin sign in">
+  <div class="admin-modal">
+    <h3>Admin sign in</h3>
+    <p>Enter the admin password to enable inline editing on this site.</p>
+    <input type="password" placeholder="Password" autocomplete="current-password" />
+    <div class="row">
+      <button class="btn btn-secondary cancel">Cancel</button>
+      <button class="btn btn-primary submit">Unlock</button>
+    </div>
+    <div class="err" role="alert"></div>
+  </div>
+</div>
+<div class="admin-bar" role="status">
+  ✏️ Editing on
+  <button class="export">Export edits</button>
+  <button class="reset">Reset</button>
+  <button class="exit">Exit</button>
+</div>
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script>
+  // ----- Activity card → set the dropdown + scroll to the form -----
+  document.querySelectorAll(".participate-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const a = card.getAttribute("data-activity");
+      const sel = document.querySelector('select[name="activity"]');
+      if (sel) {
+        for (const opt of sel.options) if (opt.value === a) { opt.selected = true; break; }
+      }
+      document.getElementById("participate-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  // ----- Participate form → mailto: -----
+  (function () {
+    const form = document.getElementById("participate-form");
+    if (!form) return;
+
+    const ACTIVITY_LABELS = {
+      parade:     "Parade",
+      carnival:   "Carnival",
+      carshow:    "Car Show",
+      pettingzoo: "Petting Zoo",
+      multiple:   "Multiple activities",
+    };
+
+    const SECTIONS = [
+      { title: "ABOUT YOU / GROUP", fields: [
+          ["groupname", "Group / individual"],
+          ["contact",   "Primary contact"],
+          ["email",     "Email"],
+          ["phone",     "Phone"],
+          ["city",      "City"],
+          ["social",    "Website / social"],
+      ]},
+      { title: "PARADE", fields: [
+          ["parade_type",   "Entry type"],
+          ["parade_size",   "Approximate size"],
+          ["parade_audio",  "Audio / PA"],
+          ["parade_blurb",  "Announcer description"],
+      ]},
+      { title: "CARNIVAL", fields: [
+          ["carnival_type",       "What you're bringing"],
+          ["carnival_size",       "Setup footprint"],
+          ["carnival_power",      "Power needs"],
+          ["carnival_insurance",  "Supervision / insurance"],
+      ]},
+      { title: "CAR SHOW", fields: [
+          ["carshow_vehicle",  "Vehicle"],
+          ["carshow_story",    "Story"],
+          ["carshow_size",     "Space needs"],
+      ]},
+      { title: "PETTING ZOO", fields: [
+          ["zoo_animals",    "Animals"],
+          ["zoo_setup",      "Setup requirements"],
+          ["zoo_insurance",  "Insurance & certifications"],
+          ["zoo_utilities",  "Water / power"],
+      ]},
+      { title: "DAY-OF LOGISTICS", fields: [
+          ["dayof",    "Day-of contact"],
+          ["arrival",  "Earliest arrival"],
+      ]},
+      { title: "NOTES", fields: [
+          ["notes",  "Notes"],
+      ]},
+    ];
+
+    function getValues() {
+      const fd = new FormData(form);
+      const out = {};
+      for (const [k, v] of fd.entries()) out[k] = (v || "").trim();
+      return out;
+    }
+
+    function buildEmail() {
+      const vals = getValues();
+      const activityLabel = ACTIVITY_LABELS[vals.activity] || "General";
+      const who = vals.groupname || "[Your group]";
+
+      const subject = `Participation Sign-Up — ${activityLabel} — ${who}`;
+
+      let body = `Hi Todd,\n\nWe'd like to participate in the 2026 MN Juneteenth Jamboree.\n\n`;
+      body += `--- ACTIVITY ---\n`;
+      body += `Signing up for: ${activityLabel}\n\n`;
+
+      for (const sec of SECTIONS) {
+        const populated = sec.fields.filter(([k]) => vals[k]);
+        if (populated.length === 0) continue;
+        body += `--- ${sec.title} ---\n`;
+        for (const [k, label] of populated) {
+          body += `${label}: ${vals[k]}\n`;
+        }
+        body += "\n";
+      }
+
+      body += "Photos attached (where applicable).\n\nThanks!\n";
+      return { subject, body };
+    }
+
+    function buildMailto() {
+      const { subject, body } = buildEmail();
+      return "mailto:MNJunteenth@gmail.com"
+        + "?subject=" + encodeURIComponent(subject)
+        + "&body="    + encodeURIComponent(body);
+    }
+
+    function showToast(msg) {
+      const t = document.querySelector(".toast");
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2400);
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const required = ["activity", "groupname", "contact", "email", "phone"];
+      for (const key of required) {
+        const el = form.querySelector(`[name="${key}"]`);
+        if (!el.value.trim()) {
+          showToast(`Please fill in: ${el.previousSibling?.nodeValue?.trim() || key}`);
+          el.focus();
+          return;
+        }
+      }
+      window.location.href = buildMailto();
+    });
+
+    document.getElementById("copy-instead").addEventListener("click", async () => {
+      const { subject, body } = buildEmail();
+      const text = "To: MNJunteenth@gmail.com\nSubject: " + subject + "\n\n" + body;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Copied — paste it into any email app");
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        showToast("Copied — paste it into any email app");
+      }
+    });
+  })();
+</script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

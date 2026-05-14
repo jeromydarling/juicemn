@@ -1227,3 +1227,54 @@ button, a.btn, .lock-btn { -webkit-tap-highlight-color: rgba(255,210,63,0.2); }
   .onboard-form fieldset { padding: 14px 16px 16px; }
   .onboard-actions .btn { flex: 1 1 100%; }
 }
+
+/* ----- Participate page ----- */
+.participate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 8px;
+}
+.participate-card {
+  background: var(--black-card);
+  border: 1px solid rgba(247,238,221,0.08);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: var(--cream);
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.participate-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-bright);
+  background: rgba(242,182,60,0.04);
+}
+.participate-card:nth-child(4n+1) { border-top-color: var(--red); }
+.participate-card:nth-child(4n+2) { border-top-color: var(--gold); }
+.participate-card:nth-child(4n+3) { border-top-color: var(--green); }
+.participate-card:nth-child(4n+4) { border-top-color: var(--gold-bright); }
+.participate-card .part-emoji {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.participate-card h3 {
+  font-family: var(--font-display);
+  color: var(--cream);
+  font-size: 1.2rem;
+  margin: 0;
+}
+.participate-card p {
+  color: var(--cream-soft);
+  font-size: 0.92rem;
+  margin: 0;
+  line-height: 1.45;
+}
+@media (max-width: 600px) {
+  .participate-card { padding: 18px 16px; }
+}
