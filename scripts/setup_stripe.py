@@ -57,6 +57,18 @@ TIERS = [
             "preset": 2_500_00,
         },
     },
+    {
+        "key": "food_vendor",
+        "name": "Food Vendor Booth — MN Juneteenth Jamboree 2026",
+        "tagline": "One food vendor booth on West Broadway, June 19, 2026. Bring your kitchen — the neighborhood is hungry by noon.",
+        "amount": 300_00,  # $300
+    },
+    {
+        "key": "non_food_vendor",
+        "name": "Non-Food Vendor Booth — MN Juneteenth Jamboree 2026",
+        "tagline": "One non-food vendor booth on West Broadway, June 19, 2026. Goods, services, art, advocacy — meet 5,000+ neighbors.",
+        "amount": 300_00,  # $300
+    },
 ]
 
 CUSTOM_FIELDS = [

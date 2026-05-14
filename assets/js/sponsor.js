@@ -12,6 +12,8 @@ const STUB_TIERS = {
   legacy:     { name: "Legacy Sponsor",      price: "$25,000",          blurb: "Solid brand exposure. Strong local presence." },
   community:  { name: "Community Sponsor",   price: "$10,000",          blurb: "Local support. Community recognition." },
   ally:       { name: "Ally Sponsor",        price: "$1,500 – $5,000",  blurb: "Foundational support. Mission alignment." },
+  food_vendor:     { name: "Food Vendor Booth",      price: "$300", blurb: "One food vendor booth on June 19, 2026." },
+  non_food_vendor: { name: "Non-Food Vendor Booth",  price: "$300", blurb: "One non-food vendor booth on June 19, 2026." },
 };
 
 let PAYMENT_LINKS = null; // populated from assets/data/payment-links.json

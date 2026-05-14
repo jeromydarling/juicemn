@@ -1101,3 +1101,41 @@ button, a.btn, .lock-btn { -webkit-tap-highlight-color: rgba(255,210,63,0.2); }
   .step-num { width: 44px; height: 44px; font-size: 1.05rem; }
   .step-body h3 { font-size: 1.1rem; }
 }
+
+/* ----- Vendor booth cards ----- */
+.vendor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 820px;
+}
+.vendor-card {
+  background: var(--black-card);
+  border: 1px solid rgba(247,238,221,0.08);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform .15s ease, border-color .15s ease;
+}
+.vendor-card:hover { transform: translateY(-2px); border-color: var(--gold); }
+.vendor-card:nth-child(2) { border-left-color: var(--red); }
+.vendor-card .vendor-name {
+  font-family: var(--font-display);
+  color: var(--cream);
+  font-size: 1.2rem;
+}
+.vendor-card .vendor-price {
+  font-family: var(--font-display);
+  color: var(--gold-bright);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.vendor-card .vendor-blurb {
+  color: var(--cream-soft);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+.vendor-card .btn { margin-top: auto; width: 100%; text-align: center; }
