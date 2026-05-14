@@ -71,12 +71,21 @@ TIERS = [
     },
 ]
 
-CUSTOM_FIELDS = [
+# Per-tier custom fields. Stripe Payment Links allow up to 3.
+# Sponsorship tiers all get the same set; vendors get tailored fields.
+
+SPONSOR_FIELDS = [
     {
         "key": "company",
         "label": {"type": "custom", "custom": "Company / Organization"},
         "type": "text",
         "optional": False,
+    },
+    {
+        "key": "website",
+        "label": {"type": "custom", "custom": "Website URL"},
+        "type": "text",
+        "optional": True,
     },
     {
         "key": "notes",
@@ -85,6 +94,97 @@ CUSTOM_FIELDS = [
         "optional": True,
     },
 ]
+
+FOOD_VENDOR_FIELDS = [
+    {
+        "key": "vendorname",
+        "label": {"type": "custom", "custom": "Business / Vendor name"},
+        "type": "text",
+        "optional": False,
+    },
+    {
+        "key": "serving",
+        "label": {"type": "custom", "custom": "What you'll be serving"},
+        "type": "dropdown",
+        "optional": False,
+        "dropdown": {
+            "options": [
+                {"label": "BBQ",                   "value": "bbq"},
+                {"label": "Soul food",             "value": "soul_food"},
+                {"label": "Caribbean",             "value": "caribbean"},
+                {"label": "African",               "value": "african"},
+                {"label": "Latin",                 "value": "latin"},
+                {"label": "Vegan / Vegetarian",    "value": "vegan_vegetarian"},
+                {"label": "Snacks / Desserts",     "value": "snacks_desserts"},
+                {"label": "Drinks / Beverages",    "value": "drinks_beverages"},
+                {"label": "Other",                 "value": "other"},
+            ]
+        },
+    },
+    {
+        "key": "power",
+        "label": {"type": "custom", "custom": "Need electrical hookup?"},
+        "type": "dropdown",
+        "optional": False,
+        "dropdown": {
+            "options": [
+                {"label": "Yes — standard 110V",  "value": "yes_110v"},
+                {"label": "Yes — heavy / 220V",   "value": "yes_220v"},
+                {"label": "No / propane only",    "value": "no_propane"},
+                {"label": "Not sure yet",         "value": "not_sure"},
+            ]
+        },
+    },
+]
+
+NON_FOOD_VENDOR_FIELDS = [
+    {
+        "key": "vendorname",
+        "label": {"type": "custom", "custom": "Business / Vendor name"},
+        "type": "text",
+        "optional": False,
+    },
+    {
+        "key": "selling",
+        "label": {"type": "custom", "custom": "What you'll be selling"},
+        "type": "dropdown",
+        "optional": False,
+        "dropdown": {
+            "options": [
+                {"label": "Apparel",                  "value": "apparel"},
+                {"label": "Art / handmade",           "value": "art_handmade"},
+                {"label": "Books / media",            "value": "books_media"},
+                {"label": "Beauty / personal care",   "value": "beauty"},
+                {"label": "Health / wellness",        "value": "health_wellness"},
+                {"label": "Community organization",   "value": "community_org"},
+                {"label": "Professional services",    "value": "professional_services"},
+                {"label": "Other",                    "value": "other"},
+            ]
+        },
+    },
+    {
+        "key": "power",
+        "label": {"type": "custom", "custom": "Need electrical hookup?"},
+        "type": "dropdown",
+        "optional": False,
+        "dropdown": {
+            "options": [
+                {"label": "Yes",  "value": "yes"},
+                {"label": "No",   "value": "no"},
+            ]
+        },
+    },
+]
+
+FIELDS_BY_TIER = {
+    "presenting":      SPONSOR_FIELDS,
+    "freedom":         SPONSOR_FIELDS,
+    "legacy":          SPONSOR_FIELDS,
+    "community":       SPONSOR_FIELDS,
+    "ally":            SPONSOR_FIELDS,
+    "food_vendor":     FOOD_VENDOR_FIELDS,
+    "non_food_vendor": NON_FOOD_VENDOR_FIELDS,
+}
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -162,6 +262,7 @@ def upsert_price(product, tier):
 
 
 def upsert_payment_link(price, tier):
+    fields = FIELDS_BY_TIER.get(tier["key"], SPONSOR_FIELDS)
     ln = find_payment_link(tier["key"])
     if ln:
         # Refresh redirect + custom fields in case the URL or fields change
@@ -171,7 +272,7 @@ def upsert_payment_link(price, tier):
                 "type": "redirect",
                 "redirect": {"url": REDIRECT_URL},
             },
-            custom_fields=CUSTOM_FIELDS,
+            custom_fields=fields,
             metadata={"tier": tier["key"], "managed_by": "juicemn-setup"},
         )
         return ln, "found"
@@ -181,7 +282,7 @@ def upsert_payment_link(price, tier):
             "type": "redirect",
             "redirect": {"url": REDIRECT_URL},
         },
-        custom_fields=CUSTOM_FIELDS,
+        custom_fields=fields,
         phone_number_collection={"enabled": True},
         metadata={"tier": tier["key"], "managed_by": "juicemn-setup"},
     )
