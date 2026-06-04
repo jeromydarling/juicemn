@@ -120,4 +120,4 @@ The original PDFs from JUICE are kept at the repo root for reference:
 
 Todd Gramenz · Executive Director
 J.U.I.C.E. — Juneteenth Urban Initiative Creating Economic-Empowerment
-(651) 800-5130 · MNJunteenth@gmail.com
+(651) 800-5130 · mnjuneteenth@gmail.com

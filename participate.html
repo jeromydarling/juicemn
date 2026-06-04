@@ -283,7 +283,7 @@
       <h4>Contact</h4>
       <p>Todd Gramenz, Executive Director</p>
       <p><a href="tel:+16518005130">(651) 800-5130</a></p>
-      <p><a href="mailto:MNJunteenth@gmail.com">MNJunteenth@gmail.com</a></p>
+      <p><a href="mailto:mnjuneteenth@gmail.com">mnjuneteenth@gmail.com</a></p>
     </div>
   </div>
   <div class="fine">
@@ -414,7 +414,7 @@
 
     function buildMailto() {
       const { subject, body } = buildEmail();
-      return "mailto:MNJunteenth@gmail.com"
+      return "mailto:mnjuneteenth@gmail.com"
         + "?subject=" + encodeURIComponent(subject)
         + "&body="    + encodeURIComponent(body);
     }
@@ -443,7 +443,7 @@
 
     document.getElementById("copy-instead").addEventListener("click", async () => {
       const { subject, body } = buildEmail();
-      const text = "To: MNJunteenth@gmail.com\nSubject: " + subject + "\n\n" + body;
+      const text = "To: mnjuneteenth@gmail.com\nSubject: " + subject + "\n\n" + body;
       try {
         await navigator.clipboard.writeText(text);
         showToast("Copied — paste it into any email app");
